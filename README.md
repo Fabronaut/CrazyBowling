@@ -27,7 +27,10 @@ A fun 3D motion-controlled physics-based rolling ball game in which the player i
 * Push Notifications
 
 ##  Mock Screens
-
+![Image of Menu-Screen](https://raw.githubusercontent.com/iksneS/CrazyBowling/master/MenuCB_1.png)
+![Image of Menu-Screen2](https://raw.githubusercontent.com/iksneS/CrazyBowling/master/MenuCB_2.png)
+![Image of In-game UI](https://raw.githubusercontent.com/iksneS/CrazyBowling/master/MenuCB_3.png)
+![Image of In-game UI2](https://raw.githubusercontent.com/iksneS/CrazyBowling/master/MenuCB_4.png)
 
 ## Value of the Game/App 
 To create a quick, fun and replayable experience for gamers that will keep them coming back for more on their free-time.
