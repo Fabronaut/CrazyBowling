@@ -11,12 +11,20 @@ import SceneKit
 
 class GameViewController: UIViewController {
 
+
+    var sceneView:SCNView!
+    var scene:SCNScene!
+    
+
     override func viewDidLoad() {
       setupScene()
     }
     
     func setupScene(){
-        
+        sceneView = self.view as! SCNView
+        sceneView.allowsCameraControl = true
+        scene = SCNScene(named: "art.scnassets/MainScene.scn")
+        sceneView.scene = scene
     }
     
     override var shouldAutorotate: Bool {
