@@ -13,6 +13,9 @@
 		FA1DF39E22690ABC007286FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA1DF39D22690ABC007286FB /* Assets.xcassets */; };
 		FA1DF3A122690ABC007286FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA1DF39F22690ABC007286FB /* LaunchScreen.storyboard */; };
 		FA1DF3A9226913BF007286FB /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = FA1DF3A8226913BF007286FB /* art.scnassets */; };
+		FA8E10A0226B784F00A28779 /* MotionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E109F226B784F00A28779 /* MotionHelper.swift */; };
+		FA8E10A2226B7A1400A28779 /* VectorOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E10A1226B7A1400A28779 /* VectorOperations.swift */; };
+		FA8E10AB226B7F5D00A28779 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = FA8E10AA226B7F5D00A28779 /* Sounds */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		FA1DF3A022690ABC007286FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA1DF3A222690ABC007286FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA1DF3A8226913BF007286FB /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		FA8E109F226B784F00A28779 /* MotionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionHelper.swift; sourceTree = "<group>"; };
+		FA8E10A1226B7A1400A28779 /* VectorOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorOperations.swift; sourceTree = "<group>"; };
+		FA8E10AA226B7F5D00A28779 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +62,8 @@
 		FA1DF39322690ABC007286FB /* CrazyBowling */ = {
 			isa = PBXGroup;
 			children = (
+				FA8E10AA226B7F5D00A28779 /* Sounds */,
+				FA8E109E226B782900A28779 /* Helper */,
 				FA1DF3A8226913BF007286FB /* art.scnassets */,
 				FA1DF39422690ABC007286FB /* AppDelegate.swift */,
 				FA1DF39822690ABC007286FB /* GameViewController.swift */,
@@ -65,6 +73,15 @@
 				FA1DF3A222690ABC007286FB /* Info.plist */,
 			);
 			path = CrazyBowling;
+			sourceTree = "<group>";
+		};
+		FA8E109E226B782900A28779 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E109F226B784F00A28779 /* MotionHelper.swift */,
+				FA8E10A1226B7A1400A28779 /* VectorOperations.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +142,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA8E10AB226B7F5D00A28779 /* Sounds in Resources */,
 				FA1DF3A122690ABC007286FB /* LaunchScreen.storyboard in Resources */,
 				FA1DF3A9226913BF007286FB /* art.scnassets in Resources */,
 				FA1DF39E22690ABC007286FB /* Assets.xcassets in Resources */,
@@ -139,8 +157,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA8E10A2226B7A1400A28779 /* VectorOperations.swift in Sources */,
 				FA1DF39922690ABC007286FB /* GameViewController.swift in Sources */,
 				FA1DF39522690ABC007286FB /* AppDelegate.swift in Sources */,
+				FA8E10A0226B784F00A28779 /* MotionHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
