@@ -11,6 +11,7 @@ import SceneKit
 
 class GameViewController: UIViewController {
 
+    let CategoryTree = 2
 
     var sceneView:SCNView!
     var scene:SCNScene!
@@ -40,6 +41,8 @@ class GameViewController: UIViewController {
         scene = SCNScene(named: "art.scnassets/MainScene.scn")
         sceneView.scene = scene
         
+        scene.physicsWorld.contactDelegate = self
+        
         let tapRecognizer = UITapGestureRecognizer()
         tapRecognizer.numberOfTapsRequired = 1
         tapRecognizer.numberOfTouchesRequired = 1
@@ -51,28 +54,29 @@ class GameViewController: UIViewController {
     // setup Nodes
     func setupNodes() {
         ballNode = scene.rootNode.childNode(withName: "bowlingball", recursively: true)!
+        ballNode.physicsBody?.contactTestBitMask = CategoryTree
         followStickNode = scene.rootNode.childNode(withName: "followStick", recursively: true)!
     }
     
     //Setting up the Sounds
     func setupSounds() {
-        let collectionSound = SCNAudioSource(fileNamed: "coin.wav")!
+        let destroySound = SCNAudioSource(fileNamed: "coin.wav")!
         let jumpSound = SCNAudioSource(fileNamed: "jump.wav")!
         
         //Loading the Sounds
-        collectionSound.load()
+        destroySound.load()
         jumpSound.load()
         
         //Setting the Volume of the Sounds
-        collectionSound.volume = 0.3 // 30% Volume
-        jumpSound.volume = 1.0 // 40% Volume
+        destroySound.volume = 1.5 // 30% Volume
+        jumpSound.volume = 1.5 // 40% Volume
         
         //Adding the Sounds to a Dictionary
-        sounds["collection"] = collectionSound
+        sounds["destroy"] = destroySound
         sounds["jump"] = jumpSound
         
         let backgroundMusic = SCNAudioSource(fileNamed: "mariobattlefield.mp3")!
-        backgroundMusic.volume = 0.1 // 10% Volume
+        backgroundMusic.volume = 0.01 // 10% Volume
         backgroundMusic.loops = true; // Loop the Background when it finishes
         backgroundMusic.load() // Load the background music
         
@@ -131,5 +135,41 @@ extension GameViewController : SCNSceneRendererDelegate {
         
         cameraPosition = SCNVector3(x: xComponent, y: yComponent, z: zComponent)
         followStickNode.position = cameraPosition
+        
+        //acceleration
+        motion.getAccelerometerData { (x, y, z) in
+            self.motionForce = SCNVector3(x: x * 0.05, y:0, z: (y + 0.8) * -0.05)}
+        
+        ballNode.physicsBody?.velocity += motionForce
+        }
+    
+    
+}
+
+extension GameViewController : SCNPhysicsContactDelegate {
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        var contactNode:SCNNode!
+        
+        if contact.nodeA.name == "bowlingball" {
+            contactNode = contact.nodeB
+        }else{
+            contactNode = contact.nodeA
+        }
+        
+        if contactNode.physicsBody?.categoryBitMask == CategoryTree{
+            contactNode.isHidden = true
+            
+            let destroySound = sounds["destroy"]!
+            ballNode.runAction(SCNAction.playAudio(destroySound, waitForCompletion: false))
+            
+            let waitAction = SCNAction.wait(duration: 15)
+            let unhideAction = SCNAction.run { (node) in node.isHidden = false
+                
+            }
+            
+            let actionSequence = SCNAction .sequence([waitAction, unhideAction])
+            contactNode.runAction(actionSequence)
+        }
+        
     }
 }
