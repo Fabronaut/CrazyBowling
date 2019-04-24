@@ -26,13 +26,81 @@ class GameViewController: UIViewController {
     
     //Sounds Properties
     var sounds:[String:SCNAudioSource] = [:]
-
+    
+    //Score Properties
+    @IBOutlet weak var scoreLabel: UILabel!
+    var score = 0
+    
+    //Timer
+    @IBOutlet weak var timerLabel: UILabel!
+    var seconds = 60
+    var timer = Timer()
+    var waitTimer = Timer()
+    var isTimerRunning = true;
+    var delaySeconds = 3
+    
+    // Timer
+    func runTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(GameViewController.updateTimer)), userInfo: nil, repeats: true)
+    }
+    
+    func runWaitTimer() {
+        waitTimer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(GameViewController.updateWaitTimer)), userInfo: nil, repeats: true)
+    }
+    
+    @objc func updateTimer() {
+        if seconds < 1 {
+            timer.invalidate()
+            //Send alert to indicate "time's up!"
+            createAlert(title: "Congratulations!", message: "Score: \(score)")
+            runWaitTimer()
+        } else {
+            seconds -= 1 //This will decrement(count down)the seconds.
+            timerLabel.text = "\(seconds)" //This will update the label.
+        }
+    }
+    
+    @objc func updateWaitTimer() {
+        if delaySeconds < 1 {
+            timer.invalidate()
+            exit(0)
+        } else {
+            delaySeconds -= 1 //This will decrement(count down)the seconds.
+        }
+    }
+    
+    @objc func updateScore(){
+        score += 10 //This will increment score by 10.
+        scoreLabel.text = "Score: \(score)"
+    }
+    
+    func createAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in alert.dismiss(animated: true, completion: nil)
+            
+        }))
+        
+        self.present(alert, animated:  true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         setupScene()
         setupNodes()
         setupSounds()
+        
+        //scoreLabel.text = " Score: \(score)"
+        scoreLabel.backgroundColor = UIColor(white:1, alpha:0)
+        scoreLabel.textColor = UIColor.white
+        
+        //timerLabel.text = "Time: \(count)"
+        timerLabel.backgroundColor = UIColor(white:1, alpha: 0)
+        timerLabel.textColor = UIColor.white
+        //timerLabel.text = "Time: \(seconds)"
+        
     }
     
+   
+
     func setupScene(){
         sceneView = self.view as! SCNView
         sceneView.delegate = self
@@ -49,6 +117,9 @@ class GameViewController: UIViewController {
         
         tapRecognizer.addTarget(self, action:#selector(GameViewController.sceneViewTapped(recognizer:)))
         sceneView.addGestureRecognizer(tapRecognizer)
+        
+        //updateTimer()
+        runTimer()
     }
     
     // setup Nodes
@@ -85,6 +156,8 @@ class GameViewController: UIViewController {
         ballNode.addAudioPlayer(musicPlayer)
         
     }
+    
+
     
     // Jump Function
     @objc func sceneViewTapped (recognizer:UITapGestureRecognizer){
@@ -159,9 +232,15 @@ extension GameViewController : SCNPhysicsContactDelegate {
         if contactNode.physicsBody?.categoryBitMask == CategoryTree{
             contactNode.isHidden = true
             
+            // Score
+            DispatchQueue.main.async{
+            self.updateScore()
+            }
+
+  
             let destroySound = sounds["destroy"]!
             ballNode.runAction(SCNAction.playAudio(destroySound, waitForCompletion: false))
-            
+
             let waitAction = SCNAction.wait(duration: 15)
             let unhideAction = SCNAction.run { (node) in node.isHidden = false
                 
